@@ -1,0 +1,122 @@
+// Modified by Minho Kim (15 Oct 2014)
+
+/** 
+ * Decoder7Seg.
+ */
+
+CHIP Decoder7Seg {
+    IN in[4];
+    OUT out[7];
+
+    PARTS:
+    // Put your code here:
+	// Use the following pins (w, notw, x, notx, y, noty, z, notz) for easier implementation
+	Not(in=in[3],out=notw);	// NOT(w)
+	Not(in=notw,out=w);		// w (==out[3])
+	Not(in=in[2],out=notx);	// NOT(x)
+	Not(in=notx,out=x);		// x (==out[2])
+	Not(in=in[1],out=noty);	// NOT(y)
+	Not(in=noty,out=y);		// y (==out[1])
+	Not(in=in[0],out=notz);	// NOT(z)
+	Not(in=notz,out=z);		// z (==out[0])
+
+	And(a=notw, b=notx, out=wx00);		
+	And(a=notw, b=x, out=wx01);
+	And(a=w, b=notx, out=wx10);		
+	And(a=w, b=x, out=wx11);
+
+	
+	Or(a=y, b=notz, out=yORnz);
+	Or(a=noty, b=z, out=nyORz);
+	Or(a=y, b=z, out=yORz);
+	And(a=y, b=z, out=yANDz);
+	And(a=noty, b=z, out=nyANDz);
+	And(a=y, b=notz, out=yANDnz);
+	Nand(a=y, b=z, out=yNANDz);
+	And(a=noty, b=notz, out=yNORz);
+	Or(a=yNORz, b=yANDz, out=yXNORz);
+	Not(in=yXNORz, out=yXORz);
+
+
+	//0
+	And(a=y, b=wx00, out=out01);
+	And(a=yNANDz, b=wx01, out=out02);
+	And(a=true, b=wx10, out=out03);
+	And(a=true, b=wx11, out=out04);
+
+	Or(a=out01, b=out02, out=out0a);
+	Or(a=out03, b=out04, out=out0b);
+	Or(a=out0a, b=out0b, out=out[0]);
+
+
+	//1
+	And(a=yNORz, b=wx00, out=out11);
+	And(a=true, b=wx01, out=out12);
+	And(a=nyORz, b=wx10, out=out13);
+	And(a=y, b=wx11, out=out14);
+
+	Or(a=out11, b=out12, out=out1a);
+	Or(a=out13, b=out14, out=out1b);
+	Or(a=out1a, b=out1b, out=out[1]);
+
+
+
+	//2
+	And(a=notz, b=wx00, out=out21);
+	And(a=yANDnz, b=wx01, out=out22);
+	And(a=yORnz, b=wx10, out=out23);
+	And(a=true, b=wx11, out=out24);
+
+	Or(a=out21, b=out22, out=out2a);
+	Or(a=out23, b=out24, out=out2b);
+	Or(a=out2a, b=out2b, out=out[2]);
+
+
+	//3
+	And(a=yORnz, b=wx00, out=out31);
+	And(a=yXORz, b=wx01, out=out32);
+	And(a=true, b=wx10, out=out33);
+	And(a=yNANDz, b=wx11, out=out34);
+
+	Or(a=out31, b=out32, out=out3a);
+	Or(a=out33, b=out34, out=out3b);
+	Or(a=out3a, b=out3b, out=out[3]);
+
+
+
+	//4
+	And(a=nyORz, b=wx00, out=out41);
+	And(a=true, b=wx01, out=out42);
+	And(a=true, b=wx10, out=out43);
+	And(a=nyANDz, b=wx11, out=out44);
+
+	Or(a=out41, b=out42, out=out4a);
+	Or(a=out43, b=out44, out=out4b);
+	Or(a=out4a, b=out4b, out=out[4]);
+
+
+
+	//5
+	And(a=true, b=wx00, out=out51);
+	And(a=yXNORz, b=wx01, out=out52);
+	And(a=yNANDz, b=wx10, out=out53);
+	And(a=yXORz, b=wx11, out=out54);
+
+	Or(a=out51, b=out52, out=out5a);
+	Or(a=out53, b=out54, out=out5b);
+	Or(a=out5a, b=out5b, out=out[5]);
+
+
+
+	//6
+	And(a=yORnz, b=wx00, out=out61);
+	And(a=yORz, b=wx01, out=out62);
+	And(a=yNANDz, b=wx10, out=out63);
+	And(a=y, b=wx11, out=out64);
+	
+	Or(a=out61, b=out62, out=out6a);
+	Or(a=out63, b=out64, out=out6b);
+	Or(a=out6a, b=out6b, out=out[6]);	
+	
+
+}

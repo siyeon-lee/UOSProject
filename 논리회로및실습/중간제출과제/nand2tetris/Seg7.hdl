@@ -1,0 +1,15 @@
+// Modified by Minho Kim (15 Oct 2014)
+
+/** 
+ * Seg7.
+ */
+
+CHIP Seg7 {
+    IN in[16];
+    OUT out[7];
+
+    PARTS:
+    // Put your code here:
+	Encoder16(in=in,out=x);
+	Decoder7Seg(in=x,out=out);
+}

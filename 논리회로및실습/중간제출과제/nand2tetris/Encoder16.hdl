@@ -1,0 +1,51 @@
+// Modified by Minho Kim (15 Oct 2014)
+
+/** 
+ * Encoder16. out=0000 if in==0000 0000 0000 0001,
+ *            out=0001 if in==0000 0000 0000 0010,
+ *            out=0010 if in==0000 0000 0000 0100,
+ *            out=0011 if in==0000 0000 0000 1000, 
+ *                           :
+ *                           :
+ *            out=1111 if in==1000 0000 0000 0000,
+ */
+
+CHIP Encoder16 {
+    IN in[16];
+    OUT out[4];
+
+    PARTS:
+    // Put your code here:
+	Or(a=in[1], b=in[3], out=for00);
+	Or(a=in[5], b=in[7], out=for01);
+	Or(a=in[9], b=in[11], out=for02);
+	Or(a=in[13], b=in[15], out=for03);
+	Or(a=for00, b=for01, out=to00);
+	Or(a=for02, b=for03, out=to01);
+	Or(a=to00, b=to01, out=out[0]);
+
+	Or(a=in[2], b=in[3], out=for10);
+	Or(a=in[6], b=in[7], out=for11);
+	Or(a=in[10], b=in[11], out=for12);
+	Or(a=in[14], b=in[15], out=for13);
+	Or(a=for10, b=for11, out=to10);
+	Or(a=for12, b=for13, out=to11);
+	Or(a=to10, b=to11, out=out[1]);	
+
+
+	Or(a=in[4], b=in[5], out=for20);
+	Or(a=in[6], b=in[7], out=for21);
+	Or(a=in[12], b=in[13], out=for22);		
+	Or(a=in[14], b=in[15], out=for23);
+	Or(a=for20, b=for21, out=to20);
+	Or(a=for22, b=for23, out=to21);
+	Or(a=to20, b=to21, out=out[2]);
+
+	Or(a=in[8], b=in[9], out=for30);
+	Or(a=in[10], b=in[11], out=for31);
+	Or(a=in[12], b=in[13], out=for32);
+	Or(a=in[14], b=in[15], out=for33);	
+	Or(a=for30, b=for31, out=to30);
+	Or(a=for32, b=for33, out=to31);
+	Or(a=to30, b=to31, out=out[3]);
+}
