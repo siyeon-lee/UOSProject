@@ -1,0 +1,2 @@
+from vpython import *
+box()
